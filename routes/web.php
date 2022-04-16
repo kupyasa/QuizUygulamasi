@@ -22,7 +22,16 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
-    Route::get('/dashboard', function () {
+    Route::get('/panel', function () {
         return view('dashboard');
     })->name('dashboard');
+});
+
+Route::group([
+    'middleware' => ['auth', 'isAdmin'],
+    'prefix' => 'admin'], 
+    function () {
+    Route::get('deneme', function () {
+        return 'middleware testi';
+    });
 });
