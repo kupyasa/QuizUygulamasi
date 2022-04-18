@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin;
+use App\Http\Controllers\Admin\QuizController;
+use App\Models\Quiz;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,9 +30,13 @@ Route::middleware([
     })->name('dashboard');
 });
 
-Route::group([
-    'middleware' => ['auth', 'isAdmin'],
-    'prefix' => 'admin'], 
+Route::group(
+    [
+        'middleware' => ['auth', 'isAdmin'],
+        'prefix' => 'admin'
+    ],
     function () {
-    Route::resource('quizzes',Admin\QuizController::class);
-});
+        Route::get('quizzes/{id}', [QuizController::class, 'destroy'])->whereNumber('id')->name('quizzes.destroy');
+        Route::resource('quizzes', Admin\QuizController::class);
+    }
+);
