@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Quiz;
 use App\Http\Requests\QuizCreateRequest;
 use App\Http\Requests\QuizUpdateRequest;
-
+use Illuminate\Support\Str;
 class QuizController extends Controller
 {
     /**
@@ -17,7 +17,15 @@ class QuizController extends Controller
      */
     public function index()
     {
-        $quizzes = Quiz::paginate(5);
+        $quizzes = Quiz::withCount('questions');
+        
+        if (request()->get('title')) {
+           $quizzes = $quizzes->where([['title','LIKE',"%".request()->get('title')."%"]]);
+        }
+        if (request()->get('status')) {
+            $quizzes = $quizzes->where([['status','=',request()->get('status')]]);
+        }
+        $quizzes = $quizzes->paginate(5);
         return view('admin.quiz.list', compact('quizzes'));
     }
 
@@ -39,6 +47,9 @@ class QuizController extends Controller
      */
     public function store(QuizCreateRequest $request)
     {
+        $request->merge([
+            'slug' => Str::slug($request->title)
+        ]);
         Quiz::create($request->post());
         return redirect()->route('quizzes.index')->withSuccess('Quiz başarıyla oluşturuldu.');
     }
@@ -51,7 +62,9 @@ class QuizController extends Controller
      */
     public function show($id)
     {
-        //
+        $quiz = Quiz::where([['id', '=', $id]])->withCount('questions')->with('results.user','topTen.user')->first() ?? abort(404, 'Quiz Bulunamadı');
+       
+        return view('admin.quiz.show', compact('quiz'));
     }
 
     /**
@@ -62,7 +75,7 @@ class QuizController extends Controller
      */
     public function edit($id)
     {
-        $quiz = Quiz::find($id) ?? abort(404, 'Quiz bulunamadı.');
+        $quiz = Quiz::withCount('questions')->find($id) ?? abort(404, 'Quiz bulunamadı.');
         return view('admin.quiz.edit', compact('quiz'));
     }
 
@@ -76,7 +89,10 @@ class QuizController extends Controller
     public function update(QuizUpdateRequest $request, $id)
     {
         $quiz = Quiz::find($id) ?? abort(404, 'Quiz bulunamadı.');
-        Quiz::where([['id', '=', $id]])->update($request->except(['_method', '_token']));
+        $request->merge([
+            'slug' => Str::slug($request->title)
+        ]);
+        Quiz::where([['id', '=', $id]])->first()->update($request->except(['_method', '_token']));
         return redirect()->route('quizzes.index')->withSuccess('Quiz başarıyla güncellendi.');
     }
 
