@@ -3,7 +3,7 @@ env: flex
 
 runtime_config: 
     document_root: public
-    php_version: 81
+    
 
 # Ensure we skip ".env", which is only for local development
 skip_files: 
