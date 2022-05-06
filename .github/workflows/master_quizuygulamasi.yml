@@ -56,5 +56,5 @@ jobs:
         with:
           app-name: 'quizuygulamasi'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D12077E4EFA546348E803199FFD80025 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_33855CF73FE74B748559E17ABEB1BF08 }}
           package: .
