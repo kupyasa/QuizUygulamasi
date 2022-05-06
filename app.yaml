@@ -1,5 +1,5 @@
-runtime: php81
-
+runtime: php
+env: flex
 
 runtime_config: 
     document_root: public
@@ -10,7 +10,8 @@ skip_files:
     - .env
 
 automatic_scaling:
-    
+    min_num_instances: 1
+    max_num_instances: 1
 
 resources:
     cpu: 2
