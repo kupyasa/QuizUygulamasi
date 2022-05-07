@@ -18,9 +18,6 @@ use App\Models\Quiz;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Route::group([
     'middleware' => ['auth',],
