@@ -9,7 +9,7 @@
                 <a href="{{ route('quizzes.index') }}" class="btn btn-secondary my-3"> <i
                     class="fa fa-arrow-left"></i>
                 Quizlere Geri Dön</a>
-                <a href="{{ route('questions.create', $quiz->id) }}" class="btn btn-primary my-3"> <i
+                <a href="{{ route('questions.create', ['quiz_id' => $quiz->id]) }}" class="btn btn-primary my-3"> <i
                         class="fa fa-plus"></i>
                     Soru
                     Oluştur</a>
