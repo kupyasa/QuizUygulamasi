@@ -76,7 +76,7 @@
                             <a href="{{ route('quiz.join', ['slug' => $quiz->slug]) }}" class="btn btn-warning">Quizi
                                 görüntüle</a>
                         </div>
-                    @elseif($quiz->finished_at > now()->setTimezone(new DateTimeZone('Asia/Istanbul'))->format('Y-m-d H:i:s'))
+                    @elseif($quiz->finished_at > now()->setTimezone(new DateTimeZone('Asia/Istanbul'))->format('Y-m-d H:i:s') || $quiz->finished_at == null)
                         <div class="text-end">
                             <a href="{{ route('quiz.join', ['slug' => $quiz->slug]) }}" class="btn btn-primary">Quize
                                 katıl</a>
